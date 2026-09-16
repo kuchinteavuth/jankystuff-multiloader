@@ -3,19 +3,30 @@ package com.inteavuthkuch.jankystuff.platform;
 import com.inteavuthkuch.jankystuff.Constants;
 import com.inteavuthkuch.jankystuff.platform.services.IRegistryHelper;
 import com.inteavuthkuch.jankystuff.platform.util.IRegistryHolder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Constants.MOD_ID);
+    private static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, Constants.MOD_ID);
+
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
+        CREATIVE_MODE_TABS.register(bus);
     }
 
     @Override
@@ -35,4 +46,28 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
             }
         };
     }
+
+    @Override
+    public IRegistryHolder<CreativeModeTab> registerCreativeModeTab(String name, Component title, Supplier<ItemStack> icon, Consumer<Consumer<ItemLike>> entries) {
+        ResourceKey<CreativeModeTab> key = IRegistryHelper.createTabKey(name);
+        CreativeModeTab.Builder builder = CreativeModeTab.builder()
+                .title(title)
+                .icon(icon)
+                .displayItems((_, output) -> entries.accept(output::accept));
+
+        DeferredHolder<CreativeModeTab, CreativeModeTab> tab = CREATIVE_MODE_TABS.register(name, builder::build);
+        return new IRegistryHolder<>() {
+            @Override
+            public CreativeModeTab get() {
+                return tab.get();
+            }
+
+            @Override
+            public Identifier id() {
+                return key.identifier();
+            }
+        };
+    }
+
+
 }

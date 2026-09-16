@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.inteavuthkuch.jankystuff.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": [],
+  "mixins": ["PaxelItemMixin"],
   "client": [],
   "server": [],
   "injectors": {

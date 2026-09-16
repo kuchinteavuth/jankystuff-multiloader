@@ -1,5 +1,6 @@
 package com.inteavuthkuch.jankystuff.item.custom;
 
+import com.inteavuthkuch.jankystuff.platform.Services;
 import com.inteavuthkuch.jankystuff.tag.ModBlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -15,6 +16,11 @@ public class PaxelItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        return InteractionResult.PASS;
+
+        InteractionResult result = Services.PAXEL_HELPER.useOn(context);
+
+        return result != InteractionResult.PASS
+                ? result
+                : super.useOn(context);
     }
 }

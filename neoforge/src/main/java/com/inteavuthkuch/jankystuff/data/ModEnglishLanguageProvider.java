@@ -12,6 +12,8 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("itemGroup.jankystuff.main_tab", "Janky Stuff");
+
         add(ModItems.IRON_PAXEL.get(), "Iron Paxel");
         add(ModItems.DIAMOND_PAXEL.get(), "Diamond Paxel");
         add(ModItems.NETHERITE_PAXEL.get(), "Netherite Paxel");

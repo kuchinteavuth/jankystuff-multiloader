@@ -1,5 +1,6 @@
 {
   "item.jankystuff.paxel_diamond": "Diamond Paxel",
   "item.jankystuff.paxel_iron": "Iron Paxel",
-  "item.jankystuff.paxel_netherite": "Netherite Paxel"
+  "item.jankystuff.paxel_netherite": "Netherite Paxel",
+  "itemGroup.jankystuff.main_tab": "Janky Stuff"
 }
