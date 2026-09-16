@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "minecraft:iron_pickaxe",
+    "L": "minecraft:iron_axe",
+    "R": "minecraft:iron_shovel",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "LCR",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "id": "jankystuff:paxel_iron"
+  }
+}

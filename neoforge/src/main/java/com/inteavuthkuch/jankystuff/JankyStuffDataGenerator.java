@@ -1,9 +1,6 @@
 package com.inteavuthkuch.jankystuff;
 
-import com.inteavuthkuch.jankystuff.data.ModBlockTagsProvider;
-import com.inteavuthkuch.jankystuff.data.ModEnglishLanguageProvider;
-import com.inteavuthkuch.jankystuff.data.ModItemTagsProvider;
-import com.inteavuthkuch.jankystuff.data.ModModelProvider;
+import com.inteavuthkuch.jankystuff.data.*;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 public final class JankyStuffDataGenerator {
@@ -14,5 +11,6 @@ public final class JankyStuffDataGenerator {
         event.createProvider(ModModelProvider::new);
         event.createProvider(ModItemTagsProvider::new);
         event.createProvider(ModBlockTagsProvider::new);
+        event.createProvider(ModRecipeProvider.Runner::new);
     }
 }

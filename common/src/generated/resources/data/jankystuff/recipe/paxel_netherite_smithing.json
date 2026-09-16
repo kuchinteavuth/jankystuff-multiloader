@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "#minecraft:netherite_tool_materials",
+  "base": "jankystuff:paxel_diamond",
+  "result": {
+    "id": "jankystuff:paxel_netherite"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

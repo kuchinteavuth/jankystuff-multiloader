@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "minecraft:diamond_pickaxe",
+    "L": "minecraft:diamond_axe",
+    "R": "minecraft:diamond_shovel",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "LCR",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "id": "jankystuff:paxel_diamond"
+  }
+}
