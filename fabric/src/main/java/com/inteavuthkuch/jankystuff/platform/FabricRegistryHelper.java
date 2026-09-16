@@ -1,7 +1,7 @@
 package com.inteavuthkuch.jankystuff.platform;
 
 import com.inteavuthkuch.jankystuff.platform.services.IRegistryHelper;
-import com.inteavuthkuch.jankystuff.platform.util.IRegistryHolder;
+import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,11 +23,11 @@ import java.util.function.Supplier;
 
 public class FabricRegistryHelper implements IRegistryHelper {
     @Override
-    public <T extends Item> IRegistryHolder<T> registerItem(String name, Function<Item.Properties, T> func) {
+    public <T extends Item> RegistryHolder<T> registerItem(String name, Function<Item.Properties, T> func) {
         ResourceKey<Item> key = IRegistryHelper.createItemKey(name);
         T item = Registry.register(BuiltInRegistries.ITEM, key.identifier(), func.apply(new Item.Properties().setId(key)));
 
-        return new IRegistryHolder<>() {
+        return new RegistryHolder<>() {
             @Override
             public T get() {
                 return item;
@@ -41,7 +41,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public IRegistryHolder<CreativeModeTab> registerCreativeModeTab(String name, Component title, Supplier<ItemStack> icon, Consumer<Consumer<ItemLike>> entries) {
+    public RegistryHolder<CreativeModeTab> registerCreativeModeTab(String name, Component title, Supplier<ItemStack> icon, Consumer<Consumer<ItemLike>> entries) {
         ResourceKey<CreativeModeTab> key = IRegistryHelper.createTabKey(name);
         CreativeModeTab.Builder builder = FabricCreativeModeTab.builder()
                 .title(title)
@@ -50,7 +50,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
 
         CreativeModeTab tab = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key.identifier(), builder.build());
 
-        return new IRegistryHolder<>() {
+        return new RegistryHolder<>() {
             @Override
             public CreativeModeTab get() {
                 return tab;
@@ -64,11 +64,11 @@ public class FabricRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T extends Block> IRegistryHolder<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func) {
+    public <T extends Block> RegistryHolder<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func) {
         ResourceKey<Block> key = IRegistryHelper.createBlockKey(name);
         T block = Registry.register(BuiltInRegistries.BLOCK, key.identifier(), func.apply(BlockBehaviour.Properties.of().setId(key)));
 
-        return new IRegistryHolder<>() {
+        return new RegistryHolder<>() {
             @Override
             public T get() {
                 return block;
@@ -82,7 +82,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public <T extends BlockItem> IRegistryHolder<T> registerBlockItem(String name, IRegistryHolder<? extends Block> block, BiFunction<Block, Item.Properties, T> func) {
+    public <T extends BlockItem> RegistryHolder<T> registerBlockItem(String name, RegistryHolder<? extends Block> block, BiFunction<Block, Item.Properties, T> func) {
         return registerItem(name, properties -> func.apply(block.get(), properties));
     }
 

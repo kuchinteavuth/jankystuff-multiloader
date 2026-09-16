@@ -3,8 +3,8 @@ package com.inteavuthkuch.jankystuff.data;
 import com.inteavuthkuch.jankystuff.Constants;
 import com.inteavuthkuch.jankystuff.block.ModBlocks;
 import com.inteavuthkuch.jankystuff.item.ModItems;
-import com.inteavuthkuch.jankystuff.platform.services.RegistryBlockItemHolder;
-import com.inteavuthkuch.jankystuff.platform.util.IRegistryHolder;
+import com.inteavuthkuch.jankystuff.platform.util.RegistryBlockItemHolder;
+import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -20,7 +20,7 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
         add(holder.blockItem().get(), text);
     }
 
-    private void add(IRegistryHolder<? extends Item> holder, String text) {
+    private void add(RegistryHolder<? extends Item> holder, String text) {
         add(holder.get(), text);
     }
 

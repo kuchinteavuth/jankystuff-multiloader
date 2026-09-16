@@ -2,12 +2,12 @@ package com.inteavuthkuch.jankystuff.platform.util;
 
 import net.minecraft.resources.Identifier;
 
-public interface IRegistryHolder<T> {
+public interface RegistryHolder<T> {
     T get();
     Identifier id();
 
-    static <T> IRegistryHolder<T> of(Identifier id, T data) {
-        return new IRegistryHolder<T>() {
+    static <T> RegistryHolder<T> of(Identifier id, T data) {
+        return new RegistryHolder<T>() {
             @Override
             public T get() {
                 return data;

@@ -1,7 +1,8 @@
 package com.inteavuthkuch.jankystuff.platform.services;
 
 import com.inteavuthkuch.jankystuff.Constants;
-import com.inteavuthkuch.jankystuff.platform.util.IRegistryHolder;
+import com.inteavuthkuch.jankystuff.platform.util.RegistryBlockItemHolder;
+import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -19,20 +20,20 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface IRegistryHelper {
-    <T extends Item> IRegistryHolder<T> registerItem(String name, Function<Item.Properties, T> func);
+    <T extends Item> RegistryHolder<T> registerItem(String name, Function<Item.Properties, T> func);
 
-    IRegistryHolder<CreativeModeTab> registerCreativeModeTab(String name, Component title, Supplier<ItemStack> icon, Consumer<Consumer<ItemLike>> entries);
+    RegistryHolder<CreativeModeTab> registerCreativeModeTab(String name, Component title, Supplier<ItemStack> icon, Consumer<Consumer<ItemLike>> entries);
 
-    <T extends Block> IRegistryHolder<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func);
+    <T extends Block> RegistryHolder<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func);
 
-    <T extends BlockItem> IRegistryHolder<T> registerBlockItem(String name, IRegistryHolder<? extends Block> block, BiFunction<Block, Item.Properties, T> func);
+    <T extends BlockItem> RegistryHolder<T> registerBlockItem(String name, RegistryHolder<? extends Block> block, BiFunction<Block, Item.Properties, T> func);
 
     default <T extends Block> RegistryBlockItemHolder<T> registerBlockWithItem(
             String name, Function<BlockBehaviour.Properties, T> block,
             BiFunction<Block, Item.Properties, BlockItem> item
     ) {
-        IRegistryHolder<T> blockHolder = registerBlock(name, block);
-        IRegistryHolder<BlockItem> itemHolder = registerBlockItem(name, blockHolder, item);
+        RegistryHolder<T> blockHolder = registerBlock(name, block);
+        RegistryHolder<BlockItem> itemHolder = registerBlockItem(name, blockHolder, item);
         return new RegistryBlockItemHolder<>(blockHolder, itemHolder);
     }
 

@@ -1,7 +1,7 @@
 package com.inteavuthkuch.jankystuff.block;
 
 import com.inteavuthkuch.jankystuff.platform.Services;
-import com.inteavuthkuch.jankystuff.platform.services.RegistryBlockItemHolder;
+import com.inteavuthkuch.jankystuff.platform.util.RegistryBlockItemHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
