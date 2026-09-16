@@ -83,7 +83,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
 
     @Override
     public <T extends BlockItem> RegistryHolder<T> registerBlockItem(String name, RegistryHolder<? extends Block> block, BiFunction<Block, Item.Properties, T> func) {
-        return registerItem(name, properties -> func.apply(block.get(), properties));
+        return registerItem(name, properties -> func.apply(block.get(), properties.useBlockDescriptionPrefix()));
     }
 
 

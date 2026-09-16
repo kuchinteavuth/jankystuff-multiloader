@@ -17,7 +17,6 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 
     private void add(RegistryBlockItemHolder<? extends Block> holder, String text) {
         add(holder.block().get(), text);
-        add(holder.blockItem().get(), text);
     }
 
     private void add(RegistryHolder<? extends Item> holder, String text) {
