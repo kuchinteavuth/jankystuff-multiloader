@@ -1,6 +1,7 @@
 package com.inteavuthkuch.jankystuff;
 
 
+import com.inteavuthkuch.jankystuff.platform.NeoForgeRegistryHelper;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 
@@ -8,6 +9,6 @@ import net.neoforged.fml.common.Mod;
 public class NeoForgeJankyStuff {
 
     public NeoForgeJankyStuff(IEventBus eventBus) {
-
+        NeoForgeRegistryHelper.register(eventBus);
     }
 }
