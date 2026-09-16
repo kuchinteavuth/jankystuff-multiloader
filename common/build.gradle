@@ -12,6 +12,16 @@ neoForge {
     }
 }
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
+def commonResourcesDir = layout.buildDirectory.dir('generated/commonResources')
+def syncCommonResources = tasks.register('syncCommonResources', Sync) {
+    from sourceSets.main.resources
+    into commonResourcesDir
+}
+
 dependencies {
     // Fabric and NeoForge both bundle Fabric Mixin, so it is safe to use it in common
     // If you need to update, check what version they are using to see what is compatible
@@ -36,7 +46,10 @@ configurations {
 
 artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
-    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+
+    commonResources(commonResourcesDir) {
+        builtBy syncCommonResources
+    }
 }
 
 // Implement mcgradleconventions loader attribute
