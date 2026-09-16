@@ -9,6 +9,8 @@ import net.neoforged.fml.common.Mod;
 public class NeoForgeJankyStuff {
 
     public NeoForgeJankyStuff(IEventBus eventBus) {
+        CommonClass.init();
         NeoForgeRegistryHelper.register(eventBus);
+        eventBus.addListener(JankyStuffDataGenerator::gatherClientData);
     }
 }
