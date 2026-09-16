@@ -7,25 +7,32 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements IRegistryHelper {
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Constants.MOD_ID);
+    private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Constants.MOD_ID);
     private static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, Constants.MOD_ID);
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
+        BLOCKS.register(bus);
         CREATIVE_MODE_TABS.register(bus);
     }
 
@@ -67,6 +74,29 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
                 return key.identifier();
             }
         };
+    }
+
+    @Override
+    public <T extends Block> IRegistryHolder<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func) {
+        ResourceKey<Block> key = IRegistryHelper.createBlockKey(name);
+        DeferredBlock<T> block = BLOCKS.registerBlock(name, func);
+
+        return new IRegistryHolder<T>() {
+            @Override
+            public T get() {
+                return block.get();
+            }
+
+            @Override
+            public Identifier id() {
+                return key.identifier();
+            }
+        };
+    }
+
+    @Override
+    public <T extends BlockItem> IRegistryHolder<T> registerBlockItem(String name, IRegistryHolder<? extends Block> block, BiFunction<Block, Item.Properties, T> func) {
+        return registerItem(name, properties -> func.apply(block.get(), properties));
     }
 
 

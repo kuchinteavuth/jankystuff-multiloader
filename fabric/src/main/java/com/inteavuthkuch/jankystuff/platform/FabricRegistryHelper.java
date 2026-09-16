@@ -8,11 +8,15 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -57,6 +61,29 @@ public class FabricRegistryHelper implements IRegistryHelper {
                 return key.identifier();
             }
         };
+    }
+
+    @Override
+    public <T extends Block> IRegistryHolder<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> func) {
+        ResourceKey<Block> key = IRegistryHelper.createBlockKey(name);
+        T block = Registry.register(BuiltInRegistries.BLOCK, key.identifier(), func.apply(BlockBehaviour.Properties.of().setId(key)));
+
+        return new IRegistryHolder<>() {
+            @Override
+            public T get() {
+                return block;
+            }
+
+            @Override
+            public Identifier id() {
+                return key.identifier();
+            }
+        };
+    }
+
+    @Override
+    public <T extends BlockItem> IRegistryHolder<T> registerBlockItem(String name, IRegistryHolder<? extends Block> block, BiFunction<Block, Item.Properties, T> func) {
+        return registerItem(name, properties -> func.apply(block.get(), properties));
     }
 
 

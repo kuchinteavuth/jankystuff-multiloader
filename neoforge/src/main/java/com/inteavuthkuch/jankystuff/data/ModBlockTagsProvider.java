@@ -1,6 +1,7 @@
 package com.inteavuthkuch.jankystuff.data;
 
 import com.inteavuthkuch.jankystuff.Constants;
+import com.inteavuthkuch.jankystuff.block.ModBlocks;
 import com.inteavuthkuch.jankystuff.tag.ModBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -21,5 +22,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .addTag(BlockTags.MINEABLE_WITH_AXE)
                 .addTag(BlockTags.MINEABLE_WITH_HOE)
                 .addTag(BlockTags.MINEABLE_WITH_SHOVEL);
+
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.SIMPLE_LAMP.block().get());
     }
 }

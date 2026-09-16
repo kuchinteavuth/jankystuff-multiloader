@@ -1,6 +1,7 @@
 package com.inteavuthkuch.jankystuff.data;
 
 import com.inteavuthkuch.jankystuff.Constants;
+import com.inteavuthkuch.jankystuff.block.ModBlocks;
 import com.inteavuthkuch.jankystuff.item.ModItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -18,5 +19,8 @@ public class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(ModItems.IRON_PAXEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.DIAMOND_PAXEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(ModItems.NETHERITE_PAXEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+
+        // Blocks
+        blockModels.createTrivialCube(ModBlocks.SIMPLE_LAMP.block().get());
     }
 }
