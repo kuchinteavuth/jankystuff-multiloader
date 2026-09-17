@@ -1,7 +1,7 @@
-package com.inteavuthkuch.jankystuff.item;
+package com.inteavuthkuch.jankystuff.init;
 
 import com.inteavuthkuch.jankystuff.common.ModToolMaterials;
-import com.inteavuthkuch.jankystuff.item.custom.PaxelItem;
+import com.inteavuthkuch.jankystuff.item.PaxelItem;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryCollection;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;
 import net.minecraft.world.item.Item;

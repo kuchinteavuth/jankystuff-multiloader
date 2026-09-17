@@ -1,6 +1,6 @@
 package com.inteavuthkuch.jankystuff.mixin;
 
-import com.inteavuthkuch.jankystuff.item.custom.PaxelItem;
+import com.inteavuthkuch.jankystuff.item.PaxelItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemInstance;
 import net.neoforged.neoforge.common.ItemAbilities;

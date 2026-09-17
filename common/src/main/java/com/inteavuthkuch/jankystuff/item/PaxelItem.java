@@ -1,4 +1,4 @@
-package com.inteavuthkuch.jankystuff.item.custom;
+package com.inteavuthkuch.jankystuff.item;
 
 import com.inteavuthkuch.jankystuff.platform.Services;
 import com.inteavuthkuch.jankystuff.tag.ModBlockTags;

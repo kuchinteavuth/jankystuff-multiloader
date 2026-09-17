@@ -1,7 +1,7 @@
 package com.inteavuthkuch.jankystuff.data;
 
 import com.inteavuthkuch.jankystuff.Constants;
-import com.inteavuthkuch.jankystuff.item.ModItems;
+import com.inteavuthkuch.jankystuff.init.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;

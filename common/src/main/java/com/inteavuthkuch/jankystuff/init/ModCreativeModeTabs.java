@@ -1,4 +1,4 @@
-package com.inteavuthkuch.jankystuff.item;
+package com.inteavuthkuch.jankystuff.init;
 
 import com.inteavuthkuch.jankystuff.platform.Services;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;

@@ -1,6 +1,5 @@
-package com.inteavuthkuch.jankystuff.block;
+package com.inteavuthkuch.jankystuff.init;
 
-import com.inteavuthkuch.jankystuff.item.ModItems;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryBlockItemHolder;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryCollection;
 import net.minecraft.world.level.block.Block;

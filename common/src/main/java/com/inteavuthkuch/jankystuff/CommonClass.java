@@ -1,8 +1,8 @@
 package com.inteavuthkuch.jankystuff;
 
-import com.inteavuthkuch.jankystuff.block.ModBlocks;
-import com.inteavuthkuch.jankystuff.item.ModCreativeModeTabs;
-import com.inteavuthkuch.jankystuff.item.ModItems;
+import com.inteavuthkuch.jankystuff.init.ModBlocks;
+import com.inteavuthkuch.jankystuff.init.ModCreativeModeTabs;
+import com.inteavuthkuch.jankystuff.init.ModItems;
 
 public class CommonClass {
 

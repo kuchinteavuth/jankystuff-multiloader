@@ -1,8 +1,8 @@
 package com.inteavuthkuch.jankystuff.data;
 
 import com.inteavuthkuch.jankystuff.Constants;
-import com.inteavuthkuch.jankystuff.block.ModBlocks;
-import com.inteavuthkuch.jankystuff.item.ModItems;
+import com.inteavuthkuch.jankystuff.init.ModBlocks;
+import com.inteavuthkuch.jankystuff.init.ModItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
