@@ -22,5 +22,7 @@ public class ModModelProvider extends ModelProvider {
 
         // Blocks
         blockModels.createTrivialCube(ModBlocks.SIMPLE_LAMP.block().get());
+        blockModels.createTrivialCube(ModBlocks.WOODEN_CRATE.block().get());
+        blockModels.createTrivialCube(ModBlocks.METAL_CRATE.block().get());
     }
 }

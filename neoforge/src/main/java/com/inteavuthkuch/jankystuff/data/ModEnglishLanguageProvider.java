@@ -32,5 +32,7 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
         add(ModItems.NETHERITE_PAXEL, "Netherite Paxel");
 
         add(ModBlocks.SIMPLE_LAMP, "Simple Lamp");
+        add(ModBlocks.WOODEN_CRATE, "Wooden Crate");
+        add(ModBlocks.METAL_CRATE, "Metal Crate");
     }
 }

@@ -1,8 +1,6 @@
 package com.inteavuthkuch.jankystuff;
 
-import com.inteavuthkuch.jankystuff.init.ModBlocks;
-import com.inteavuthkuch.jankystuff.init.ModCreativeModeTabs;
-import com.inteavuthkuch.jankystuff.init.ModItems;
+import com.inteavuthkuch.jankystuff.init.*;
 
 public class CommonClass {
 
@@ -10,5 +8,7 @@ public class CommonClass {
         ModItems.initialize();
         ModBlocks.initialize();
         ModCreativeModeTabs.initialize();
+        ModBlockEntities.initialize();
+        ModMenuTypes.initialize();
     }
 }

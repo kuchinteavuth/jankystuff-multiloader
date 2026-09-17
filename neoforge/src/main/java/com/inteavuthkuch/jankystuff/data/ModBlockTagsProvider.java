@@ -23,6 +23,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .addTag(BlockTags.MINEABLE_WITH_HOE)
                 .addTag(BlockTags.MINEABLE_WITH_SHOVEL);
 
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.SIMPLE_LAMP.block().get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.SIMPLE_LAMP.block().get(), ModBlocks.METAL_CRATE.block().get());
+        tag(BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.WOODEN_CRATE.block().get());
     }
 }

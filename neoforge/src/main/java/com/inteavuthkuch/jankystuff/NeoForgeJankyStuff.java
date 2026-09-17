@@ -12,5 +12,6 @@ public class NeoForgeJankyStuff {
         CommonClass.init();
         NeoForgeRegistryHelper.register(eventBus);
         eventBus.addListener(JankyStuffDataGenerator::gatherClientData);
+        eventBus.addListener(NeoForgeJankyStuffClient::registerMenuScreens);
     }
 }

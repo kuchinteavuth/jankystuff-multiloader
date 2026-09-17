@@ -1,5 +1,7 @@
 package com.inteavuthkuch.jankystuff.init;
 
+import com.inteavuthkuch.jankystuff.block.MetalCrateBlock;
+import com.inteavuthkuch.jankystuff.block.WoodenCrateBlock;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryBlockItemHolder;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryCollection;
 import net.minecraft.world.level.block.Block;
@@ -21,4 +23,7 @@ public class ModBlocks {
                     .strength(0.3F)
                     .sound(SoundType.GLASS)
             ));
+
+    public static final RegistryBlockItemHolder<Block> WOODEN_CRATE = BLOCKS.registerBlockWithItem("crate_wooden", WoodenCrateBlock::new);
+    public static final RegistryBlockItemHolder<Block> METAL_CRATE = BLOCKS.registerBlockWithItem("crate_metal", MetalCrateBlock::new);
 }

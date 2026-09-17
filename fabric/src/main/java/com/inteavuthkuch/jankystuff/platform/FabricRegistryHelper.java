@@ -3,19 +3,29 @@ package com.inteavuthkuch.jankystuff.platform;
 import com.inteavuthkuch.jankystuff.platform.services.IRegistryHelper;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -86,5 +96,40 @@ public class FabricRegistryHelper implements IRegistryHelper {
         return registerItem(name, properties -> func.apply(block.get(), properties.useBlockDescriptionPrefix()));
     }
 
+    @Override
+    public <T extends BlockEntity> RegistryHolder<BlockEntityType<T>> registerBlockEntityType(String name, Supplier<BiFunction<BlockPos, BlockState, T>> factory, Supplier<List<Block>> validBlocks) {
+        ResourceKey<BlockEntityType<?>> key = IRegistryHelper.createBlockEntityTypeKey(name);
+        BlockEntityType<T> blockEntityType = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, key.identifier(),
+                FabricBlockEntityTypeBuilder.create(factory.get()::apply, validBlocks.get().toArray(Block[]::new)).build());
 
+        return new RegistryHolder<>() {
+            @Override
+            public BlockEntityType<T> get() {
+                return blockEntityType;
+            }
+
+            @Override
+            public Identifier id() {
+                return key.identifier();
+            }
+        };
+    }
+
+    @Override
+    public <T extends AbstractContainerMenu> RegistryHolder<MenuType<T>> registerMenuType(String name, BiFunction<Integer, Inventory, T> factory) {
+        ResourceKey<MenuType<?>> key = IRegistryHelper.createMenuTypeKey(name);
+        MenuType<T> menuType = Registry.register(BuiltInRegistries.MENU, key.identifier(), new MenuType<>(factory::apply, FeatureFlags.REGISTRY.allFlags()));
+
+        return new RegistryHolder<>() {
+            @Override
+            public MenuType<T> get() {
+                return menuType;
+            }
+
+            @Override
+            public Identifier id() {
+                return key.identifier();
+            }
+        };
+    }
 }

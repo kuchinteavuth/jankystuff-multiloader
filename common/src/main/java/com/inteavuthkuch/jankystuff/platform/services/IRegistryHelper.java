@@ -3,17 +3,25 @@ package com.inteavuthkuch.jankystuff.platform.services;
 import com.inteavuthkuch.jankystuff.Constants;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryBlockItemHolder;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -41,6 +49,15 @@ public interface IRegistryHelper {
         return registerBlockWithItem(name, block, BlockItem::new);
     }
 
+    <T extends BlockEntity> RegistryHolder<BlockEntityType<T>> registerBlockEntityType(String name, Supplier<BiFunction<BlockPos, BlockState, T>> factory, Supplier<List<Block>> validBlocks);
+
+//    default <T extends BlockEntity> RegistryHolder<BlockEntityType<T>> registerBlockEntityTypeForHolder(String name, Supplier<BiFunction<BlockPos, BlockState, T>> factory, List<RegistryBlockItemHolder<Block>> validBlocks){
+//        List<Block> blocks = validBlocks.stream().map(b -> b.block().get()).toList();
+//        return registerBlockEntityType(name, factory, blocks);
+//    }
+
+    <T extends AbstractContainerMenu> RegistryHolder<MenuType<T>> registerMenuType(String name, BiFunction<Integer, Inventory, T> factory);
+
     static ResourceKey<Item> createItemKey(String name) {
         return ResourceKey.create(Registries.ITEM, Constants.modId(name));
     }
@@ -49,5 +66,11 @@ public interface IRegistryHelper {
     }
     static ResourceKey<CreativeModeTab> createTabKey(String name) {
         return ResourceKey.create(Registries.CREATIVE_MODE_TAB, Constants.modId(name));
+    }
+    static ResourceKey<BlockEntityType<?>> createBlockEntityTypeKey(String name) {
+        return ResourceKey.create(Registries.BLOCK_ENTITY_TYPE, Constants.modId(name));
+    }
+    static ResourceKey<MenuType<?>> createMenuTypeKey(String name) {
+        return ResourceKey.create(Registries.MENU, Constants.modId(name));
     }
 }

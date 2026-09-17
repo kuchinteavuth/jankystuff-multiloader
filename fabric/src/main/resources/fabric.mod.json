@@ -17,6 +17,9 @@
     "entrypoints": {
         "main": [
           "com.inteavuthkuch.jankystuff.FabricJankyStuff"
+        ],
+        "client": [
+            "com.inteavuthkuch.jankystuff.FabricJankyStuffClient"
         ]
     },
     "mixins": [
