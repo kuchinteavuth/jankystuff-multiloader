@@ -1,9 +1,12 @@
 package com.inteavuthkuch.jankystuff.menu;
 
+import com.inteavuthkuch.jankystuff.block.entity.MetalCrateBlockEntity;
 import com.inteavuthkuch.jankystuff.common.CrateMaterial;
 import com.inteavuthkuch.jankystuff.common.CrateMaterials;
+import com.inteavuthkuch.jankystuff.common.ISortableMenu;
 import com.inteavuthkuch.jankystuff.common.Texture;
 import com.inteavuthkuch.jankystuff.init.ModMenuTypes;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -11,22 +14,27 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.awt.*;
 
-public class MetalCrateMenu extends AbstractContainerMenu {
+public class MetalCrateMenu extends AbstractContainerMenu implements ISortableMenu {
 
     private final Container container;
+    private final BlockEntity blockEntity;
     public static final CrateMaterial material = CrateMaterials.METAL;
 
-    public MetalCrateMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, new SimpleContainer(material.rows() * material.cols()));
+    public MetalCrateMenu(int containerId, Inventory playerInventory, BlockPos pos) {
+        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(pos));
     }
 
-    public MetalCrateMenu(int containerId, Inventory inventory, Container container) {
+    public MetalCrateMenu(int containerId, Inventory inventory, BlockEntity blockEntity) {
         super(ModMenuTypes.METAL_CRATE_MENU.get(), containerId);
 
-        this.container = container;
+        this.blockEntity = blockEntity;
+        this.container = blockEntity == null
+                ? new SimpleContainer(material.rows() * material.cols())
+                : (MetalCrateBlockEntity)blockEntity;
         Texture texture = material.texture();
 
         checkContainerSize(this.container, material.rows() * material.cols());
@@ -39,6 +47,11 @@ public class MetalCrateMenu extends AbstractContainerMenu {
 
     public CrateMaterial getMaterial() {
         return material;
+    }
+
+    @Override
+    public BlockEntity getBlockEntity() {
+        return this.blockEntity;
     }
 
     private void createSlotContainer(Container container, Point startPosition) {

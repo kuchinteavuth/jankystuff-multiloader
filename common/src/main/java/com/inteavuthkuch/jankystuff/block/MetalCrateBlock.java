@@ -2,6 +2,7 @@ package com.inteavuthkuch.jankystuff.block;
 
 import com.inteavuthkuch.jankystuff.block.entity.MetalCrateBlockEntity;
 import com.inteavuthkuch.jankystuff.menu.MetalCrateMenu;
+import com.inteavuthkuch.jankystuff.platform.Services;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -39,9 +40,7 @@ public class MetalCrateBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof MetalCrateBlockEntity be) {
-            player.openMenu(new SimpleMenuProvider((containerId, inventory, p)
-                    -> new MetalCrateMenu(containerId, inventory, be), be.getDisplayName()));
-
+            Services.PLATFORM.openExtendedMenu(player, be, pos, BlockPos.STREAM_CODEC);
             return InteractionResult.SUCCESS;
         }
 

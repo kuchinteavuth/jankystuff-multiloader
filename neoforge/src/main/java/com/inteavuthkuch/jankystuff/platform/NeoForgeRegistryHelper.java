@@ -3,9 +3,13 @@ package com.inteavuthkuch.jankystuff.platform;
 import com.inteavuthkuch.jankystuff.Constants;
 import com.inteavuthkuch.jankystuff.platform.services.IRegistryHelper;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;
+import com.inteavuthkuch.jankystuff.util.function.TriFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,6 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -133,6 +138,28 @@ public class NeoForgeRegistryHelper implements IRegistryHelper {
     public <T extends AbstractContainerMenu> RegistryHolder<MenuType<T>> registerMenuType(String name, BiFunction<Integer, Inventory, T> factory) {
 
         DeferredHolder<MenuType<?>, MenuType<T>> holder = MENU_TYPES.register(name, () -> new MenuType<>(factory::apply, FeatureFlags.REGISTRY.allFlags()));
+
+        return new RegistryHolder<>() {
+            @Override
+            public MenuType<T> get() {
+                return holder.get();
+            }
+
+            @Override
+            public Identifier id() {
+                return holder.getId();
+            }
+        };
+    }
+
+    @Override
+    public <T extends AbstractContainerMenu, D> RegistryHolder<MenuType<T>> registerMenuType(String name, TriFunction<Integer, Inventory, D, T> factory, StreamCodec<? super RegistryFriendlyByteBuf, D> streamCodec) {
+        DeferredHolder<MenuType<?>, MenuType<T>> holder = MENU_TYPES.register(name, () ->
+                IMenuTypeExtension.create((windowId, inv, buf) -> {
+                    D data = streamCodec.decode(buf);
+                    return factory.apply(windowId, inv, data);
+                })
+        );
 
         return new RegistryHolder<>() {
             @Override

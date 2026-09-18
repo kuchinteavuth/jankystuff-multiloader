@@ -2,6 +2,7 @@ package com.inteavuthkuch.jankystuff.block.entity;
 
 import com.inteavuthkuch.jankystuff.common.CrateMaterials;
 import com.inteavuthkuch.jankystuff.init.ModBlockEntities;
+import com.inteavuthkuch.jankystuff.menu.MetalCrateMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -26,6 +27,6 @@ public class MetalCrateBlockEntity extends BaseCrateBlockEntity implements MenuP
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
-        return null;
+        return new MetalCrateMenu(containerId, inventory, this);
     }
 }

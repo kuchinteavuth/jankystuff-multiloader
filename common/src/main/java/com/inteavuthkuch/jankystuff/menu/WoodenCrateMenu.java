@@ -1,32 +1,43 @@
 package com.inteavuthkuch.jankystuff.menu;
 
+import com.inteavuthkuch.jankystuff.block.entity.WoodenCrateBlockEntity;
 import com.inteavuthkuch.jankystuff.common.CrateMaterial;
 import com.inteavuthkuch.jankystuff.common.CrateMaterials;
+import com.inteavuthkuch.jankystuff.common.ISortableMenu;
 import com.inteavuthkuch.jankystuff.common.Texture;
 import com.inteavuthkuch.jankystuff.init.ModMenuTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.awt.*;
 
-public class WoodenCrateMenu extends AbstractContainerMenu {
+public class WoodenCrateMenu extends AbstractContainerMenu implements ISortableMenu {
 
     private final Container container;
+    private final BlockEntity blockEntity;
     public static final CrateMaterial material = CrateMaterials.WOODEN;
 
-    public WoodenCrateMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, new SimpleContainer(material.rows() * material.cols()));
+    public WoodenCrateMenu(int containerId, Inventory playerInventory, BlockPos blockPos) {
+        this(containerId, playerInventory, playerInventory.player.level().getBlockEntity(blockPos));
     }
 
-    public WoodenCrateMenu(int containerId, Inventory inventory, Container container) {
+    public WoodenCrateMenu(int containerId, Inventory inventory, BlockEntity blockEntity) {
         super(ModMenuTypes.WOODEN_CRATE_MENU.get(), containerId);
 
-        this.container = container;
+        this.blockEntity = blockEntity;
+        this.container = blockEntity == null
+                ? new SimpleContainer(material.rows() * material.cols())
+                : (WoodenCrateBlockEntity)blockEntity;
         Texture texture = material.texture();
 
         checkContainerSize(this.container, material.rows() * material.cols());
@@ -41,6 +52,10 @@ public class WoodenCrateMenu extends AbstractContainerMenu {
         return material;
     }
 
+    @Override
+    public BlockEntity getBlockEntity() {
+        return this.blockEntity;
+    }
 
     private void createSlotContainer(Container container, Point position) {
         for(int i = 0; i < material.rows(); i++) {

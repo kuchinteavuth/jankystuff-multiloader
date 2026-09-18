@@ -3,9 +3,13 @@ package com.inteavuthkuch.jankystuff.platform.services;
 import com.inteavuthkuch.jankystuff.Constants;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryBlockItemHolder;
 import com.inteavuthkuch.jankystuff.platform.util.RegistryHolder;
+import com.inteavuthkuch.jankystuff.util.function.TriFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -57,6 +61,7 @@ public interface IRegistryHelper {
 //    }
 
     <T extends AbstractContainerMenu> RegistryHolder<MenuType<T>> registerMenuType(String name, BiFunction<Integer, Inventory, T> factory);
+    <T extends AbstractContainerMenu, D> RegistryHolder<MenuType<T>> registerMenuType(String name, TriFunction<Integer, Inventory, D, T> factory, StreamCodec<? super RegistryFriendlyByteBuf, D> streamCodec);
 
     static ResourceKey<Item> createItemKey(String name) {
         return ResourceKey.create(Registries.ITEM, Constants.modId(name));

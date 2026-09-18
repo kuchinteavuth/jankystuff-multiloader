@@ -27,6 +27,12 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
     protected void addTranslations() {
         add("itemGroup.jankystuff.main_tab", "Janky Stuff");
 
+        add("gui.jankystuff.button.sort", "Sort");
+        add("gui.jankystuff.button.sort.direction.asc", "Asc");
+        add("gui.jankystuff.button.sort.direction.desc", "Desc");
+        add("gui.jankystuff.button.sort.option.name", "Name");
+        add("gui.jankystuff.button.sort.option.amount", "Amount");
+
         add(ModItems.IRON_PAXEL, "Iron Paxel");
         add(ModItems.DIAMOND_PAXEL, "Diamond Paxel");
         add(ModItems.NETHERITE_PAXEL, "Netherite Paxel");

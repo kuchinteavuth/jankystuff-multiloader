@@ -1,6 +1,8 @@
 package com.inteavuthkuch.jankystuff.block.entity;
 
 import com.inteavuthkuch.jankystuff.common.CrateMaterial;
+import com.inteavuthkuch.jankystuff.common.ISortableBlockEntity;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -31,9 +33,15 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-public abstract class BaseCrateBlockEntity extends BlockEntity implements Container, Nameable {
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public abstract class BaseCrateBlockEntity extends BlockEntity implements Container, Nameable, ISortableBlockEntity {
 
     public final CrateMaterial material;
+    protected boolean isSortByAmount = false;
+    protected boolean isAscending = true;
     protected NonNullList<ItemStack> inventory;
     protected @Nullable Component name;
 
@@ -43,11 +51,96 @@ public abstract class BaseCrateBlockEntity extends BlockEntity implements Contai
         this.inventory = NonNullList.withSize(material.rows() * material.cols(), ItemStack.EMPTY);
     }
 
-    protected NonNullList<ItemStack> getItems() {
+    public NonNullList<ItemStack> getItems() {
         return this.inventory;
     }
 
+    public boolean getIsSortByAmount() {
+        return this.isSortByAmount;
+    }
+
+    public boolean getIsSortAscending() {
+        return this.isAscending;
+    }
+
+    @Override
+    public void sort(boolean byAmount, boolean ascending) {
+        sortContainer(this, byAmount, ascending);
+
+        this.isSortByAmount = byAmount;
+        this.isAscending = ascending;
+        setChanged();
+
+        if (this.level != null && !this.level.isClientSide()) {
+            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
+    }
+
     /* CONTAINER */
+    protected static void sortContainer(Container container, boolean sortByAmount, boolean isAscending) {
+        List<ItemStack> items = new ArrayList<>();
+
+        // 1. Collect non-empty item stacks
+        for (int i = 0; i < container.getContainerSize(); i++) {
+            ItemStack stack = container.getItem(i);
+            if (!stack.isEmpty()) {
+                items.add(stack.copy());
+            }
+        }
+
+        if (items.isEmpty()) {
+            return; // Container is empty, nothing to sort
+        }
+
+        // 2. Combine matching stacks (up to maxStackSize)
+        List<ItemStack> mergedItems = new ArrayList<>();
+        for (ItemStack stack : items) {
+            boolean merged = false;
+            for (ItemStack existing : mergedItems) {
+                if (ItemStack.isSameItemSameComponents(stack, existing) && existing.getCount() < existing.getMaxStackSize()) {
+                    int transferable = Math.min(stack.getCount(), existing.getMaxStackSize() - existing.getCount());
+                    existing.grow(transferable);
+                    stack.shrink(transferable);
+
+                    if (stack.isEmpty()) {
+                        merged = true;
+                        break;
+                    }
+                }
+            }
+            if (!stack.isEmpty()) {
+                mergedItems.add(stack);
+            }
+        }
+
+        // 3. Define Comparator based on packet parameters
+        Comparator<ItemStack> comparator;
+        if (sortByAmount) {
+            comparator = Comparator.comparingInt(ItemStack::getCount)
+                    .thenComparing(s -> s.getHoverName().getString());
+        } else {
+            comparator = Comparator.comparing((ItemStack s) -> s.getHoverName().getString())
+                    .thenComparingInt(ItemStack::getCount);
+        }
+
+        if (!isAscending) {
+            comparator = comparator.reversed();
+        }
+
+        mergedItems.sort(comparator);
+
+        // 4. Write sorted items back to the container slots
+        for (int i = 0; i < container.getContainerSize(); i++) {
+            if (i < mergedItems.size()) {
+                container.setItem(i, mergedItems.get(i));
+            } else {
+                container.setItem(i, ItemStack.EMPTY);
+            }
+        }
+
+        // 5. Mark container changed to save and sync updates
+        container.setChanged();
+    }
 
     @Override
     public int getContainerSize() {
@@ -169,6 +262,8 @@ public abstract class BaseCrateBlockEntity extends BlockEntity implements Contai
         super.loadAdditional(input);
         this.name = parseCustomNameSafe(input, "CustomName");
         ContainerHelper.loadAllItems(input, inventory);
+        this.isSortByAmount = input.getBooleanOr("IsSortByAmount", false);
+        this.isAscending = input.getBooleanOr("IsSortAscending", false);
     }
 
     @Override
@@ -176,5 +271,7 @@ public abstract class BaseCrateBlockEntity extends BlockEntity implements Contai
         super.saveAdditional(output);
         output.storeNullable("CustomName", ComponentSerialization.CODEC, this.name);
         ContainerHelper.saveAllItems(output, inventory, false);
+        output.store("IsSortByAmount", Codec.BOOL, this.isSortByAmount);
+        output.store("IsSortAscending", Codec.BOOL, this.isAscending);
     }
 }

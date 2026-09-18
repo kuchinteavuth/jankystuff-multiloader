@@ -1,5 +1,12 @@
 package com.inteavuthkuch.jankystuff.platform.services;
 
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.function.Consumer;
+
 public interface IPlatformHelper {
 
     /**
@@ -33,4 +40,7 @@ public interface IPlatformHelper {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    // Custom
+    <D> void openExtendedMenu(Player player, MenuProvider provider, D extraData,  StreamCodec<? super RegistryFriendlyByteBuf, D> streamCodec);
 }
